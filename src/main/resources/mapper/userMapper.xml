@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zenin.mybatis.dao.IUserDao">
+
+    <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+         INSERT INTO USER(name, userAge, userAddress) VALUES(#{userName}, #{userAge}, #{userAddress})
+        ]]>
+    </insert>
+
+    <delete id="deleteUserById" parameterType="int">
+        <![CDATA[
+         DELETE FROM USER WHERE id = #{id}
+        ]]>
+    </delete>
+
+    <update id="updateUser" parameterType="User">
+        <![CDATA[
+         UPDATE USER SET userAge = #{userAge} WHERE id = #{id}
+        ]]>
+    </update>
+
+    <select id="queryUserById" parameterType="int" resultType="com.zenin.mybatis.entity.User">
+        <![CDATA[
+         SELECT * FROM USER WHERE ID = #{id}
+        ]]>
+    </select>
+
+    <select id="queryListUser" parameterType="string" resultMap="listUser">
+        <![CDATA[
+         SELECT * FROM USER WHERE name LIKE #{userName}
+        ]]>
+    </select>
+
+    <select id="queryUserArticles" parameterType="int" resultMap="userArticleList">
+        <![CDATA[
+         SELECT article.id AS aid,article.title,article.content,user.id,user.name,user.userAddress FROM article,user WHERE article.userId = user.id ANd user.id = #{id}
+        ]]>
+    </select>
+
+    <resultMap id="listUser" type="com.zenin.mybatis.entity.User">
+        <id column="id" property="id"/>
+        <result property="userName" column="name"/>
+        <result property="userAddress" column="userAddress"/>
+    </resultMap>
+
+    <!--<resultMap id="userArticleList" type="com.zenin.mybatis.entity.Article">
+        <id property="id" column="aid" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <association property="user" javaType="com.zenin.mybatis.entity.User">
+            <id column="id" property="id"/>
+            <result property="userName" column="name"/>
+            <result property="userAddress" column="userAddress"/>
+        </association>
+    </resultMap> -->
+
+    <resultMap id="userArticleList" type="com.zenin.mybatis.entity.Article">
+        <id property="id" column="aid" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <association property="user" javaType="com.zenin.mybatis.entity.User" resultMap="listUser"/>
+    </resultMap>
+
+</mapper>

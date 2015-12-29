@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zenin.mybatis.dao.IArticleDao">
+
+    <insert id="addArticle" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+         INSERT INTO USER(name, userAge, userAddress) VALUES(#{userName}, #{userAge}, #{userAddress})
+        ]]>
+    </insert>
+
+    <delete id="deleteArticleById" parameterType="int">
+        <![CDATA[
+         DELETE FROM USER WHERE id = #{id}
+        ]]>
+    </delete>
+
+    <update id="updateArticleById" parameterType="map">
+        <![CDATA[ UPDATE USER SET userAge = #{userAge} WHERE id = #{id} ]]>
+    </update>
+
+    <update id="updateArticle" parameterType="com.zenin.mybatis.entity.User">
+        <![CDATA[ UPDATE USER SET userAge = #{userAge} WHERE id = #{id} ]]>
+    </update>
+
+    <select id="queryArticleById" parameterType="int" resultType="com.zenin.mybatis.entity.User">
+        <![CDATA[
+         SELECT * FROM ARTICLE WHERE ID = #{id}
+        ]]>
+    </select>
+
+    <select id="queryArticleByUser" parameterType="string" resultType="com.zenin.mybatis.entity.Article">
+        <![CDATA[
+         SELECT * FROM USER WHERE name LIKE #{userName}
+        ]]>
+    </select>
+
+
+</mapper>
